@@ -8,26 +8,38 @@ import { Router } from '@angular/router';
   templateUrl: './employee-list.component.html',
   styleUrls: ['./employee-list.component.css']
 })
-export class EmployeeListComponent implements OnInit{
+export class EmployeeListComponent implements OnInit {
+
 
   employees: Employee[] | undefined;
 
   constructor(private employeeService: EmployeeService,
-    private router: Router) {}
+    private router: Router) { }
 
   ngOnInit(): void {
     this.getEmployees();
   }
 
-  private getEmployees(){
+  private getEmployees() {
     this.employeeService.getEmployeesList().subscribe(data => {
       this.employees = data;
     })
   }
 
-  updateEmployee(id: number | undefined){
+  updateEmployee(id: number | undefined) {
     this.router.navigate(['update-employee', id]);
 
+  }
+
+  deleteEmployee(id: number | undefined) {
+    this.employeeService.deleteEmployee(id).subscribe(data => {
+      console.log(data);
+      this.getEmployees();
+    })
+  }
+
+  employeeDetails(id: number | undefined) {
+    this.router.navigate(['employee-details', id]);
   }
 
 }
